@@ -15,6 +15,7 @@ exports.login = (req, res)=>{
             const token = jwt.sign({ userId: user.id }, 'my-secret-key')
             res.send({
                 username : user.name,
+                id : user.id,
                 token
             }) 
         }else{
@@ -23,5 +24,24 @@ exports.login = (req, res)=>{
                 message: "Wrong Email or Password!"
             })
         }
+    })
+}
+
+exports.register = (req, res) => {
+    const{email,password,name, image} = req.body
+
+    User.create(req.body).then(()=>{
+        User.findOne({
+            where: {
+                name, password
+            }
+        }).then(user => {
+            const token = jwt.sign({ userId: user.id }, 'my-secret-key')
+            res.send({
+                username : user.name,
+                id : user.id,
+                token
+            }) 
+        })
     })
 }
