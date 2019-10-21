@@ -1,7 +1,14 @@
-const Todo = require('../models').todo
+const models = require('../models')
+const Todo = models.todo
+const User = models.user
 
 exports.index = (req, res) => {
-    Todo.findAll().then(todos=>res.send(todos))
+    Todo.findAll({
+        include: [{
+            model: User,
+            as: "createdBy"
+        }]
+    }).then(todos=>res.send(todos))
 }
 
 exports.show = (req, res) => {
