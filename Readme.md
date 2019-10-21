@@ -1,36 +1,15 @@
-## hello Express
+## Auto reload dengan Nodemon
 
-Pelajaran selanjutnya adalah membuat program Hello Express
+Pada dasarnya nodemon ini akan memonitor setiap perubahan dana akan otomatis merestart server kita,
+sehingga kita tidak perlu berulang ulang melakukan mengetikkan perintah node index.js
 
-Untuk membuatnya kita perlu menginstall Express terllebih dahulu
-```javascript
-   //instantiate express modeule
-    const express = require ('express')
-
-    //use express in app variable
-    const app = express()
-
-    //define the server port
-    const port = 5000
-
-    //buat home page route
-    app.get('/', (req, res) => {
-        //mengirim respon ke API
-        res.send('Hello Express')
-    })
-
-    //ketika node dieksekusi, tampilkan console log listen port
-    app.listen(port, () => console.log(`listening on port ${port}`))
+Install nodemon nya dengan perintah
+```
+   npm i -g nodemon
 ```
 
-kemudian jalankan express
+Kemudian kita bisa jalankan nodemon dengan perintah
 ```
-    node index.js
-```
-
-Buka browser dan ketikkan 
-```
-    localhost:5000
+    nodemon index.js
 ```
 
-5000 di sini adalah port yang kita definisikan di index.js di atas
