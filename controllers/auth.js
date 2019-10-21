@@ -8,11 +8,13 @@ exports.login = (req, res)=>{
     const email = req.body.email
     const password = req.body.password //use encryption in real world case!
 
-    User.findOne({where: {email, password}}).then(user=>{
+    User.findOne(
+        
+        {where: {email, password}}).then(user=>{
         if(user){
             const token = jwt.sign({ userId: user.id }, 'my-secret-key')
             res.send({
-                user,
+                username : user.name,
                 token
             }) 
         }else{
