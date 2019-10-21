@@ -1,45 +1,93 @@
-## Structuring
+## Bekerja Dengan Database
 
-Ada begitu banyak pola untuk menyusun aplikasi express kita. Pada kesempatan kali ini kita akan belajar tentang structuring yang kita gunakan pada aplikasi kita secara sederhana dan mudah.
+Untuk meteri kali ini akan dibahas bagaimana memanipulasi database dengan express. Kita akan bekerja dengan MySQL. Pastikan sudah memiliki MySQL di komputer kita.
 
-Buat folder controller dan buat file dengan nama todos.js
+Langkah selanjutnya adalah membuat database dan tabel, misal saja nama tabelnya adalah todos dengan struktur sebagai berikut
+```
+    id PK ai
+    title varchar
+    isDone boolean/tinyint
+```
+
+Kemudian tambahkan package 'mysql' di express app kita
+```
+    npm i --save mysql
+```
+
+Tambahkan file db.js untuk mengkonksikan app kita dengan database
+```javascript
+    const mysql = require('mysql')
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'backendwebtoon'
+    })
+
+    connection.connect()
+
+    module.exports = connection
+```
+
+Selanjutnya kita dapat memanggil query melalui controllers todo.js kita
+
 
 ```javascript
-   ...
+    const connection = require('../db')
 
-        app.get('/api/v1/todos', (req, res) => {
-            res.send(todos)
+    exports.index = (req, res) => {
+        connection.query('SELECT * FROM todos', (err, rows) => {
+            if(err) throw err
+
+            res.send(rows)
         })
-            
-        router.get('/api/v1/todo/:id', (req, res) => {
-            const id = req.params.id
-            const index = id - 1    
-            res.send(todos[index])
+    }
+
+    exports.show = (req, res) => {
+        connection.query(`SELECT * FROM todos WHERE id=${req.params.id}`, (err, rows) => {
+            if(err) throw err
+
+            res.send(rows[0])
+        })
+    }
+
+    exports.store = (req, res) => {
+        const {title, isDone} = req.body
+
+        connection.query(`INSERT INTO todos (title, isDone) VALUES('${title}','${isDone}')`, (err) => {
+            if(err) throw err
         })
 
-    ...
+        res.send({
+            success: true,
+            data: req.body.title
+        })
+    }
+
+    exports.update = (req, res) => {
+        const id = req.params.id
+        const {title, isDone} = req.body
+        
+        connection.query(`UPDATE INTO todos SET title=${title}, isDone=${isDone} WHERE id=${id}`, (err) => {
+            if(err) throw err
+        })
+
+        res.send({
+            success: true,
+            data: req.body
+        })
+    }
+
+    exports.delete = (req, res) => {
+        
+        connection.query(`DELETE FROM todos WHERE id=${req.params.id}`, (err) => {
+            if(err) throw err
+        })
+
+        res.send({
+            success: true
+        })
+    }
 ```
 
-untuk membuat route API nya kita bisa menggunakannya di file index.js
-
-```javascript
-    //controllers
-    const TodosController = require('./controllers/todo')
-
-    app.group("/api/v1", (router) => {
-            //todos API
-            router.get('/todos', TodosController.index)
-            router.get('/todo/:id', TodosController.show)    
-            router.post('/todo', TodosController.store)    
-            router.patch('/todo/:id', TodosController.update)    
-            router.delete('/todo/:id', TodosController.delete)
-        }
-    )
-```
-
-maka kita bisa mengakses endpoint kita dengan cara akses 
-```
-    http://localhost:5000/api/v1/todos
-
-    http://localhot:5000/api/v1/todo/1
-```
+Untuk selanjutnya bisa kita test melalui postman atau aplikasi semacamnya

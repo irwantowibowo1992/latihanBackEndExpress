@@ -1,43 +1,55 @@
-const todos = [
-    {
-        id: 1,
-        title: "Walking with Lucinta",
-        isDone: true
-    },
-    {
-        id: 2,
-        title: "Sleeping with Lucinta",
-        isDone: false
-    }
-]
+const connection = require('../db')
 
 exports.index = (req, res) => {
-    res.send(todos)
+    connection.query('SELECT * FROM todos', (err, rows) => {
+        if(err) throw err
+
+        res.send(rows)
+    })
 }
 
 exports.show = (req, res) => {
-    const id = req.params.id
-    const index = id - 1
-    res.send(todos[index])
+    connection.query(`SELECT * FROM todos WHERE id=${req.params.id}`, (err, rows) => {
+        if(err) throw err
+
+        res.send(rows[0])
+    })
 }
 
 exports.store = (req, res) => {
-    const data = req.body
-    todos.push(data)
-    res.send(data)
+    const {title, isDone} = req.body
+
+    connection.query(`INSERT INTO todos (title, isDone) VALUES('${title}','${isDone}')`, (err) => {
+        if(err) throw err
+    })
+
+    res.send({
+        success: true,
+        data: req.body.title
+    })
 }
 
 exports.update = (req, res) => {
     const id = req.params.id
-    const index = id - 1
-    const data = req.body
-    todos[index] = {...todos[index], ...data}
-    res.send(todos[index])
+    const {title, isDone} = req.body
+    
+    connection.query(`UPDATE INTO todos SET title=${title}, isDone=${isDone} WHERE id=${id}`, (err) => {
+        if(err) throw err
+    })
+
+    res.send({
+        success: true,
+        data: req.body
+    })
 }
 
 exports.delete = (req, res) => {
-    const id = req.params.id
-    const index = index - 1
-    todos.splice(index, 1)
-    res.send(todos)
+    
+    connection.query(`DELETE FROM todos WHERE id=${req.params.id}`, (err) => {
+        if(err) throw err
+    })
+
+    res.send({
+        success: true
+    })
 }
