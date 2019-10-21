@@ -1,12 +1,8 @@
-## Group Routes
+## Structuring
 
-Group Routes diperlukan dalam pengembangan API untuk membedakan rute untuk API atau untuk tautan situs web standar. contohnya adalah seperti ini
+Ada begitu banyak pola untuk menyusun aplikasi express kita. Pada kesempatan kali ini kita akan belajar tentang structuring yang kita gunakan pada aplikasi kita secara sederhana dan mudah.
 
-https://dumbways.id/p/bootcamp vs https://dumbways.id/api/v1/bootcamp
-
-Tentu saja Anda akan melihat perbedaannya. Tautan pertama adalah tautan standar untuk mengakses halaman di situs web, sedangkan tautan kedua adalah API yang menyediakan data JSON. Jadi awalan akan diperlukan untuk membedakan rute dalam aplikasi web.
-
-Jika Anda tidak menggunakan rute grup, Anda harus menambahkan awalan di setiap rute seperti ini:
+Buat folder controller dan buat file dengan nama todos.js
 
 ```javascript
    ...
@@ -24,39 +20,22 @@ Jika Anda tidak menggunakan rute grup, Anda harus menambahkan awalan di setiap r
     ...
 ```
 
-Hal sepertin ini memang bisa, tetapi kita harus mengetiknya secara manual satu per satu, dan tentu saja itu tidak terlalu efektif. Jadi cara yang benar adalah seperti ini:
+untuk membuat route API nya kita bisa menggunakannya di file index.js
 
-Pertama kita install express-group-routes
-```
-    npm i --save express-group-routes
-```
-
-Kemudian kita akan ubah fileindex.js menjadi seperti ini
 ```javascript
-    ...
-    require('express-group-routes')
+    //controllers
+    const TodosController = require('./controllers/todo')
 
-    ...
-
-    //use group routes here
     app.group("/api/v1", (router) => {
-        router.get('/todos', (req, res) => {
-            res.send(todos)
-        })
-        
-        router.get('/todo/:id', (req, res) => {
-            const id = req.params.id
-            const index = id - 1    
-            res.send(todos[index])
-        })
-        
-        ...
-    })
-
-    ...
+            //todos API
+            router.get('/todos', TodosController.index)
+            router.get('/todo/:id', TodosController.show)    
+            router.post('/todo', TodosController.store)    
+            router.patch('/todo/:id', TodosController.update)    
+            router.delete('/todo/:id', TodosController.delete)
+        }
+    )
 ```
-
-dengan cara ini, semua rute Anda akan dikelompokkan dan diawali dengan /api/v1
 
 maka kita bisa mengakses endpoint kita dengan cara akses 
 ```
