@@ -1,18 +1,36 @@
-## NPM init
+## hello Express
 
-Pelajaran pertama ini kita akan mulai dengan NPM init, caranya sangat mudah sekali
+Pelajaran selanjutnya adalah membuat program Hello Express
 
-instal NodeJS dan NPM di komputer kita
-untuk memastikan apakah sudah terinstal apa belum kita bisa cek dengan menggunakan perintah berikut :
+Untuk membuatnya kita perlu menginstall Express terllebih dahulu
+```javascript
+   //instantiate express modeule
+    const express = require ('express')
+
+    //use express in app variable
+    const app = express()
+
+    //define the server port
+    const port = 5000
+
+    //buat home page route
+    app.get('/', (req, res) => {
+        //mengirim respon ke API
+        res.send('Hello Express')
+    })
+
+    //ketika node dieksekusi, tampilkan console log listen port
+    app.listen(port, () => console.log(`listening on port ${port}`))
 ```
-    node -v
 
-    npm -v
+kemudian jalankan express
+```
+    node index.js
 ```
 
-setelah itu kita bisa buat direktori untuk app kita, misalkan namanya BACKEND-API
-kemuadian masuk ke direktori kita dan kita init dengan perintah
+Buka browser dan ketikkan 
+```
+    localhost:5000
+```
 
-```
-    npm init
-```
+5000 di sini adalah port yang kita definisikan di index.js di atas

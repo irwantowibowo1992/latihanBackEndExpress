@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/irwantowibowo1992/latihanBackEndExpress/issues"
   },
-  "homepage": "https://github.com/irwantowibowo1992/latihanBackEndExpress#readme"
+  "homepage": "https://github.com/irwantowibowo1992/latihanBackEndExpress#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
