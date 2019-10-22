@@ -14,6 +14,9 @@ const AuthController = require('./controllers/auth')
 //middlewares
 const { authenticated } = require('./middleware')
 
+//Webtoon
+const WebtoonController = require('./controllers/webtoon')
+
 app.group("/api/v1", (router) => {
         //auth API
         router.post('/login', AuthController.login)
@@ -25,6 +28,9 @@ app.group("/api/v1", (router) => {
         // router.post('/todo', authenticated, TodosController.store)    
         // router.patch('/todo/:id', authenticated, TodosController.update)    
         // router.delete('/todo/:id', authenticated, TodosController.delete)
+
+        //Webtoons
+        router.get('/webtoons', WebtoonController.index)
     }
 )
 
