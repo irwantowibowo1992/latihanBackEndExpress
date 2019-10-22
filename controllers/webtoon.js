@@ -12,3 +12,7 @@ exports.index=(req,res) => {
         }]
     }).then(webtoon => res.send(webtoon))
 }
+
+exports.show = (req, res) => {
+    Webtoon.findOne({id: req.params.id}).then(webtoons=> res.send(webtoons))
+}

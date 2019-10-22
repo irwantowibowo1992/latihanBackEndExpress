@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       // as: 'createdBy',
       foreignKey: 'createdBy'
     })
+
+    webtoon.hasMany(models.detailwebtoon,{
+      foreignKey: 'webtoonId'
+    })
   };
   return webtoon;
 };

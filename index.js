@@ -17,6 +17,9 @@ const { authenticated } = require('./middleware')
 //Webtoon
 const WebtoonController = require('./controllers/webtoon')
 
+//DetailWebtoon
+const DetailWebtoonController = require('./controllers/detailwebtoon')
+
 app.group("/api/v1", (router) => {
         //auth API
         router.post('/login', AuthController.login)
@@ -31,6 +34,10 @@ app.group("/api/v1", (router) => {
 
         //Webtoons
         router.get('/webtoons', WebtoonController.index)
+        router.get('/webtoon/:id', WebtoonController.show)
+
+        //Detail Webtoon
+        router.get('/webtoon/:id/detailwebtoons', DetailWebtoonController.index)
     }
 )
 
